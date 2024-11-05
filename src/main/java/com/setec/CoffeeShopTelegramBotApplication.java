@@ -9,5 +9,6 @@ public class CoffeeShopTelegramBotApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CoffeeShopTelegramBotApplication.class, args);
 	}
+	
 
 }

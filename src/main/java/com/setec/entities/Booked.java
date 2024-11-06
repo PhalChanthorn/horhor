@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Booked {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	
 	private Integer id;
 	private String name;
@@ -33,4 +33,3 @@ public class Booked {
 	private int person;
 	
 }
-

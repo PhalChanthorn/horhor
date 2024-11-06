@@ -1,35 +1,81 @@
-package com.setec.entities;
+package com.setec.controller;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Entity(name="tbl_booked")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Booked {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+import com.setec.entities.Booked;
+import com.setec.repository.BookedRepo;
+import com.setec.service.Mytelegrambot;
+@Controller
+public class MyController {
 	
-	private Integer id;
-	private String name;
-	private String phoneNumber;
-	private String email;
-	@DateTimeFormat(pattern = "MM/dd/yyyy")
-	private LocalDate date;
-	@DateTimeFormat(pattern = "h:mm a")
-	private LocalTime time;
-	private int person;
+	@GetMapping({"/","/home/page"})
+	public String home(Model mod) {
+		Booked booked = new Booked(1,
+				"",
+				"",
+				"",
+				LocalDate.now(),
+				LocalTime.now(),0);
+		mod.addAttribute("booked",booked);
+		return "index";
+	}
+	@GetMapping("/about")
+	public String about() {
+		return "about";
+	}
+	@GetMapping("/service")
+	public String service() {
+		return "service";
+	}
+	@GetMapping("/menu")
+	public String menu() {
+		return "menu";
+	}
+	@GetMapping("/reservation")
+	public String reservation(Model mod) {
+		Booked booked = new Booked(1,
+				"",
+				"",
+				"",
+				LocalDate.now(),
+				LocalTime.now(),0);
+		mod.addAttribute("booked",booked);
+		return "reservation";
+	}
 	
+	@GetMapping("/testimonial")
+	public String testimonial() {
+		return "testimonial";
+	}
+	@GetMapping("/contact")
+	public String contact() {
+		return "contact";
+	}
+	
+	@Autowired
+	private BookedRepo bookedRepo;
+	
+	@Autowired
+	private Mytelegrambot bot;
+	
+	@PostMapping("/success")
+	public String success(@RequestBody @ModelAttribute Booked booked) {
+		bookedRepo.save(booked);
+		bot.sendMessage("🆔 ID: "+booked.getId()+"\n👤 Name : "+booked.getName()+"\n📞 Phone: "+booked.getPhoneNumber()+"\n✉️ Mail : "+booked.getEmail()+"\n📅 Date : "+booked.getDate()+"\n⏰ Time : "+booked.getTime()+"\n👥 Person : "+booked.getPerson());
+		
+		
+		
+		return "success";
+	}
 }

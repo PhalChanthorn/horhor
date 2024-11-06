@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.setec.entities.Booked;
 import com.setec.repository.BookedRepo;
@@ -71,7 +70,7 @@ public class MyController {
 	private Mytelegrambot bot;
 	
 	@PostMapping("/success")
-	public String success(@ModelAttribute Booked booked) {
+	public String success(@RequestBody @ModelAttribute Booked booked) {
 		bookedRepo.save(booked);
 		bot.sendMessage("🆔 ID: "+booked.getId()+"\n👤 Name : "+booked.getName()+"\n📞 Phone: "+booked.getPhoneNumber()+"\n✉️ Mail : "+booked.getEmail()+"\n📅 Date : "+booked.getDate()+"\n⏰ Time : "+booked.getTime()+"\n👥 Person : "+booked.getPerson());
 		

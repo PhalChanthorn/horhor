@@ -70,7 +70,7 @@ public class MyController {
 	private Mytelegrambot bot;
 	
 	@PostMapping("/success")
-	public String success(@RequestBody @ModelAttribute Booked booked) {
+	public String success(@ModelAttribute Booked booked) {
 		bookedRepo.save(booked);
 		bot.sendMessage("🆔 ID: "+booked.getId()+"\n👤 Name : "+booked.getName()+"\n📞 Phone: "+booked.getPhoneNumber()+"\n✉️ Mail : "+booked.getEmail()+"\n📅 Date : "+booked.getDate()+"\n⏰ Time : "+booked.getTime()+"\n👥 Person : "+booked.getPerson());
 		
